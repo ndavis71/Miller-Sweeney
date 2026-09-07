@@ -1,0 +1,84 @@
+# Check AutoCAD Connection
+
+---
+
+## Trigger
+
+Use this skill when the user asks:
+- "Are you connected to AutoCAD?" / "Is AutoCAD connected?"
+- "Check my AutoCAD connection" / "Can you see AutoCAD?"
+- Before any drafting skill runs, as its first step.
+
+---
+
+## What This Skill Does
+
+Runs a diagnostic script that:
+1. Confirms pywin32 (the COM bridge) is importable from `.venv`.
+2. Attaches to the running AutoCAD instance (optionally requiring AutoCAD 2023).
+3. Confirms a drawing is open and writable.
+4. Writes the text **"Hello from Claude. You are connected to AutoCAD."** at (0,0,0), height 1.0 drawing unit (1 ft in this project), on layer 0.
+
+No outputs are saved. The hello text stays in the drawing until the user deletes it; pass `--no-text` to skip it.
+
+---
+
+## Step-by-Step Procedure
+
+### Step 1 — Run the check
+
+```bash
+.venv/Scripts/python tools/check-autocad/check_autocad.py --require-2023
+```
+
+Drop `--require-2023` only if the user is deliberately working in another release.
+
+### Step 2 — Interpret the result
+
+**Success — `"status": "ok"`**
+
+> Connected to **{product}** (version {version}). Active drawing: **{document}**.
+> The hello text is at the origin; `ZOOM` → `E` if you don't see it.
+
+If `"text_written": false`, show `text_warning` and say the connection is live but the write failed (locked or read-only state).
+
+**Failure — read `"code"`:**
+
+| Code | Meaning | Tell the user |
+|---|---|---|
+| `NO_PYWIN32` | pywin32 missing in `.venv` | Run `.venv\Scripts\pip install pywin32` then `python .venv\Scripts\pywin32_postinstall.py -install`. |
+| `NOT_RUNNING` | AutoCAD installed, not open | Open AutoCAD 2023 and a `.dwg`, then retry. |
+| `NOT_INSTALLED` | No AutoCAD registry key | Install AutoCAD 2023 for Windows. Mac/Web do not support COM. |
+| `NO_DOCUMENT` | Start screen only | Open or create a `.dwg`. |
+| `READONLY` | Drawing locked / read-only | Open a writeable copy; close Print Preview. |
+| `WRONG_VERSION` | Attached to 2020 or 2022 | Close other releases; open in AutoCAD 2023. |
+| `COM_ERROR` | Low-level COM failure | Restart AutoCAD; run once as Administrator; repair install. |
+
+Always show the `"fix"` text from the JSON.
+
+### Step 3 — Next steps (success only)
+
+Offer:
+- **read-asbuilt** — render and index the scanned as-built sheets (`skills/read-asbuilt.skill`).
+- **Set up Caltrans paths** — `.venv/Scripts/python tools/_common/setup_acad_paths.py --dry-run` then without `--dry-run` to add the kit fonts, plot styles and templates to the AutoCAD 2023 profile.
+- **Build a new skill** — describe the sheet or check to automate; see CLAUDE.md "Building Mode".
+
+---
+
+## Edge Cases
+
+1. Multiple AutoCAD instances open — `GetActiveObject` picks whichever Windows considers active. Close all but AutoCAD 2023.
+2. AutoCAD launched as Administrator while Python is not (or vice versa) — COM will not connect across elevation levels. Match them.
+3. Civil 3D — connects the same way but `Caption` differs; the project targets plain AutoCAD 2023.
+
+---
+
+## Notes
+
+- Windows only. Shared connection logic lives in `tools/_common/acad_com.py`; other drafting tools import it rather than re-implementing the connect.
+- Hello text height was 250 (mm) in the originating workspace; this project is in feet, so it is 1.0.
+
+---
+
+## LOCK Status
+☐ UNLOCKED — connection utility, no design calcs, no LOCK required.

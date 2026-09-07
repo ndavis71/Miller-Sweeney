@@ -1,0 +1,10 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.skill text eol=lf
+*.dwg binary
+*.dwt binary
+*.pdf binary
+*.docx binary
+*.png binary

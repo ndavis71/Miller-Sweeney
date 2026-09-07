@@ -1,0 +1,83 @@
+# Read Design Code Clauses
+
+---
+
+## Trigger
+
+Use this skill whenever a calculation, memo, note or answer needs a code provision:
+- "What does AASHTO say about orthotropic deck fatigue?"
+- "What load factor applies to counterweight dead load in the Movable spec?"
+- "Find BDP guidance on strengthening steel girders"
+- Any time a clause number, table value, resistance factor or equation is about to be written down.
+
+CALCULATION_RULES §1: **never supply a code value from memory.** This skill is how you read it.
+
+---
+
+## Codes available and precedence (EOR decision 2026-09-07)
+
+| Prec. | Key | Document | Notes |
+|---|---|---|---|
+| 1 | `ca` | California Amendments to AASHTO LRFD BDS 8th Ed. (Sept 2025 compilation) | Binding. Bookmarked by section and article. Replaces/adds to specific AASHTO articles; if an article is in `ca`, that text governs. |
+| 1 | `bdp` | Caltrans Bridge Design Practice, 5th Ed. | 21 chapter PDFs; needs `--chapter`. Guidance and worked examples conforming to AASHTO 8th + Amendments. |
+| 2 | `movable` | AASHTO LRFD Movable Highway Bridge Design Specs, 3rd Ed. 2023 | No bookmarks; search text. Section TOC precedes each section body. |
+| 3 | `lrfd` | AASHTO LRFD Bridge Design Specs, 8th Ed. 2017 | Bookmarks to article level (coarser in some sections); text search as fallback. |
+| 4 | `aisc` | AISC Steel Construction Manual, 15th Ed. 2017 | Bookmarks at Part/Chapter level; Specification starts PDF p 1389, Commentary p 1697. |
+
+None of the PDFs carry page labels; the printed page number (e.g. `6-45`, `3-29B`) is in the page text. Chapter and section map: `01_References/Design Codes/CODES_INDEX.md`.
+
+---
+
+## Step-by-Step Procedure
+
+### Step 1 — Locate (always check `ca` first for an AASHTO article)
+
+```bash
+.venv/Scripts/python tools/read-code/find_clause.py ca --clause 3.4.1
+.venv/Scripts/python tools/read-code/find_clause.py lrfd --clause 3.4.1
+.venv/Scripts/python tools/read-code/find_clause.py movable --search "counterweight" --max 30
+.venv/Scripts/python tools/read-code/find_clause.py bdp --chapter 16.1 --toc "cover plate"
+.venv/Scripts/python tools/read-code/find_clause.py aisc --toc "Table J3.2"
+```
+
+`--clause` checks bookmarks first, then text with a line-start match, so `6.6.1` does not hit `6.6.1.2`. The first text hits are usually the section TOC entries; the body page follows.
+
+### Step 2 — Read the page
+
+```bash
+.venv/Scripts/python tools/read-code/find_clause.py ca --pdf-page 41 --chars 6000
+.venv/Scripts/python tools/read-code/find_clause.py lrfd --pdf-page 700 --chars 6000
+```
+
+Read the provision **and its commentary** (AASHTO prints commentary in the right column; extraction interleaves them — look for the `C3.4.1` prefix). Read the neighbouring page if the clause runs over. In `ca`, amended text is what Caltrans requires; the page header shows the section and printed page (`3-29B` style pages are Caltrans insertions).
+
+### Step 3 — Cite
+
+Format: `<Document short name> <Ed.> Art. <number> (p. <printed>; PDF p <n>)`.
+
+- `CA Amendments (Sept 2025) Art. 3.4.1, Table 3.4.1-1 (p. 3-13; PDF p 41)`
+- `AASHTO LRFD 8th Art. 6.6.1.2.3, Table 6.6.1.2.3-1 (p. 6-xx; PDF p nnn)` — add `not amended by CA` or `as amended, see CA p …`.
+- `AASHTO Movable 3rd Art. 2.4.1.2 (p. 2-7; PDF p 41)`
+- `Caltrans BDP 5th Ch 6.2 §6.2.5 (p. 6.2-11; PDF p 11)`
+- `AISC 15th Spec. Sec. J3.6 (PDF p 1573)`
+
+In a calc script the citation goes in the trailing comment of the value (CALCULATION_RULES §1).
+
+### Step 4 — Precedence check
+
+If the provision exists in more than one document, look it up in every applicable one, apply the highest precedence, and record the others' values and the difference in the calc's `ASSUMPTIONS`/notes. Do not resolve a conflict yourself; flag it (CALCULATION_RULES §8).
+
+---
+
+## Rules
+
+1. Quote only what the page text shows. Extraction can scramble equations and tables; when a table or equation is needed, render the page and view it: `render_pages.py --pdf "<code pdf>" --pages <n> --dpi 200` (the read-asbuilt renderer works on any PDF), then Read the PNG.
+2. An AASHTO LRFD article is never cited without first checking whether `ca` amends it.
+3. Never cite an edition other than those in the table above.
+4. Caltrans STPs, Caltrans Std Specs 2025 / SSPs 2025 and AWS D1.5 are **not** in the references. If a question needs them, say so and stop; do not substitute memory.
+5. Do not write into `01_References/Design Codes/` except `CODES_INDEX.md`.
+
+---
+
+## LOCK Status
+☐ UNLOCKED — run `.venv/Scripts/pytest tools/read-code`; LOCK when green.

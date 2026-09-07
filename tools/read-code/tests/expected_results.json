@@ -1,0 +1,31 @@
+{
+  "_comment": "LOCK benchmarks for read-code. Probed with pymupdf on 2026-09-07 against the PDFs in 01_References/Design Codes (AASHTO 8th Ed. + CA Amendments set).",
+  "page_count": {
+    "lrfd": 1783,
+    "ca": 430,
+    "movable": 312,
+    "aisc": 2324
+  },
+  "lrfd_clause_probe": {
+    "clause": "6.6.1.2",
+    "pdf_page": 728,
+    "title_contains": "Load-Induced Fatigue",
+    "_note": "8th Ed. Section 6 bookmarks stop at this depth; 6.6.1.2.3 body is PDF p 729 via text search"
+  },
+  "ca_clause_probe": {
+    "clause": "3.4.1",
+    "pdf_page": 41,
+    "_note": "bookmark '3.4.1\u2014Load Factors and Load Combinations'"
+  },
+  "movable_clause_probe": {
+    "clause": "1.4.1",
+    "pdf_page": 11,
+    "_note": "first line-start hit is the Section 1 TOC entry; body text is on PDF p 21"
+  },
+  "bdp_probe": {
+    "chapter": "6.2",
+    "pattern": "6\\.2\\.5\\s+STRUCTURAL MODELING",
+    "pdf_page": 1,
+    "_note": "first hit is the chapter TOC on PDF p 1; body heading is on PDF p 11"
+  }
+}

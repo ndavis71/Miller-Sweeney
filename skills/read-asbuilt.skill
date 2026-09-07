@@ -1,0 +1,112 @@
+# Read As-Built Sheets
+
+---
+
+## Trigger
+
+Use this skill when the user asks anything that needs the 1973 as-built drawings:
+- "What does Sheet 12 show?" / "Look at the as-built framing plan"
+- "Index the as-builts" / "Which sheet has the trunnion column?"
+- "What is the deck plate thickness / girder spacing / span length per the as-builts?"
+- Any calculation or drawing task that needs an existing dimension.
+
+---
+
+## What This Skill Does
+
+The as-built PDF (`01_References/As_Builts/01A Fruitvale Avenue Highway Bridge AS-BUILT-1.pdf`, 79 pages) is a scan with **no text layer**. Nothing can be searched or extracted as text. This skill:
+
+1. Renders requested pages to PNG with `tools/read-asbuilt/render_pages.py`.
+2. Has Claude **view** each render with the `Read` tool and record what the sheet is in `01_References/As_Builts/index.json`.
+3. Regenerates `01_References/As_Builts/INDEX.md` with `tools/read-asbuilt/build_index.py`.
+4. Answers the user's question **from the render just viewed**, citing `AS-BUILT Sheet N (PDF p M)`.
+
+Renders are generated files (gitignored). `index.json` is the source of truth; `INDEX.md` is generated.
+
+---
+
+## Step-by-Step Procedure
+
+### Step 0 — Preconditions
+
+- `.venv` exists and `import pymupdf` works. If not: `"C:/Users/ndavis/.pyenv/pyenv-win/versions/3.11.9/python.exe" -m venv .venv && .venv/Scripts/pip install -r requirements.txt`.
+- PDF present at the path above. If the user renamed or split it, ask; do not guess.
+
+### Step 1 — Find the page
+
+If `INDEX.md` already maps the sheet the user wants, use its `pdf_page`. Otherwise:
+
+```bash
+.venv/Scripts/python tools/read-asbuilt/render_pages.py --pages 1-5
+```
+
+and view the title/index sheet to locate the target. The set is **79 PDF pages but the user refers to Sheets 1–37**: expect duplicates, revisions, or a second volume. Never assume PDF page = sheet number. Record the mapping in `index.json` as you go.
+
+### Step 2 — Render
+
+Default 150 dpi full page:
+
+```bash
+.venv/Scripts/python tools/read-asbuilt/render_pages.py --pages 14
+```
+
+For reading dimensions or small lettering, render at 300 dpi and crop to the region (fractions x0,y0,x1,y1 of the page):
+
+```bash
+.venv/Scripts/python tools/read-asbuilt/render_pages.py --pages 14 --dpi 300 --crop 0.0,0.5,0.5,1.0
+```
+
+Output goes to `01_References/As_Builts/renders/` as `p014.png`, `p014_300dpi_crop.png`. Existing files are skipped unless `--force`.
+
+### Step 3 — View and record
+
+Use `Read` on the PNG. Then add or update the entry in `index.json`:
+
+```json
+{"pdf_page": 14, "sheet_no": "12", "title": "FRAMING PLAN — BASCULE SPAN", "dwg_no": null,
+ "scale": "1/4\"=1'-0\"", "summary": "Floor beam and stringer layout, bascule leaf; girder spacing table.",
+ "legibility": "fair", "verified": false, "notes": "lower-right title block cropped in scan"}
+```
+
+Rules while recording:
+- `title` exactly as lettered on the sheet (upper case as drawn).
+- `legibility` reflects whether dimensions are readable at 300 dpi: `good` / `fair` / `poor`.
+- `verified` stays `false`; only a human sets it `true` after checking the entry against the sheet.
+- One entry per PDF page, even for duplicates (note "duplicate of p 13" in `notes`).
+
+### Step 4 — Regenerate the index
+
+```bash
+.venv/Scripts/python tools/read-asbuilt/build_index.py --page-count 79
+```
+
+### Step 5 — Answer
+
+State the value, its sheet and page, and the legibility caveat if any:
+
+> Deck plate thickness is 1/2" — AS-BUILT Sheet 12 (PDF p 14), read from the typical section at 300 dpi; the fraction is clear.
+
+If the value cannot be read: say so, name the sheet, and suggest a higher-dpi crop or a field check. **Never fill in a plausible number.**
+
+---
+
+## Rules
+
+1. A dimension is quoted only after its render has been viewed in this session. No recall from earlier sessions or from INDEX.md summaries.
+2. Every quoted value carries `AS-BUILT Sheet N (PDF p M)`.
+3. Illegible ≠ absent. Report `illegible` and stop.
+4. Do not write into `01_References/` except `As_Builts/renders/`, `As_Builts/index.json`, `As_Builts/INDEX.md`.
+5. If two sheets disagree (e.g. original vs. revision), report both; the EOR decides which governs (CALCULATION_RULES §9).
+
+---
+
+## Edge Cases
+
+- **Rotated pages** — `render_pages.py --info` shows `rotation`; PyMuPDF applies it, so renders are upright. If a scan itself is sideways, note it and read anyway.
+- **Very large sheets** — full-page 300 dpi PNGs can exceed 10 MB; use `--crop`.
+- **Page count changes** — if `--info` reports ≠ 79, the PDF was replaced. Update `tools/read-asbuilt/tests/expected_results.json` in Building Mode and re-LOCK.
+
+---
+
+## LOCK Status
+☐ UNLOCKED — run `.venv/Scripts/pytest tools/read-asbuilt` ; LOCK when all tests pass and the first five index entries are human-verified.

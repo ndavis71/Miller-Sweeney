@@ -1,0 +1,35 @@
+[
+  {
+    "pdf_page": 1,
+    "sheet_no": "1A",
+    "title": "FRUITVALE AVENUE HIGHWAY BRIDGE — SCHEDULE OF DRAWINGS (crop of Sheet 1)",
+    "dwg_no": "2-6-62",
+    "scale": null,
+    "summary": "Letter-size (11x8.5 in) crop of the Schedule of Drawings table from Sheet 1. Hand-marked '1A'. Lists Sheets 1-78 plus 12A, 52A-52F, 57A-57C. Heavy scan streaks; the full sheet on PDF p 3 is more legible.",
+    "legibility": "poor",
+    "verified": false,
+    "notes": "Duplicate content of PDF p 3 (upper table area). Use p 3."
+  },
+  {
+    "pdf_page": 2,
+    "sheet_no": "1B",
+    "title": "FRUITVALE AVENUE HIGHWAY BRIDGE — TITLE BLOCK (crop of Sheet 1)",
+    "dwg_no": "2-6-62",
+    "scale": null,
+    "summary": "Letter-size crop of the Sheet 1 title block and revision block. Hand-marked '1B'. Shows revisions 1-3 (Aug 1971 to Dec 1971), MKI / USACE San Francisco District, Drawn A. Woodworth, Sheet 1, Drawing Number 2-6-62, file no. T-4691.",
+    "legibility": "good",
+    "verified": false,
+    "notes": "Duplicate content of PDF p 3 (lower-right). Revision 4 'As Constructed' is cut off in this crop; visible on p 3."
+  },
+  {
+    "pdf_page": 3,
+    "sheet_no": "1",
+    "title": "DRAWING LIST AND LOCATION, VICINITY AND SITE MAPS",
+    "dwg_no": "2-6-62",
+    "scale": "As shown; site map 1\"=200'",
+    "summary": "Full 43x30 in sheet. Schedule of Drawings for the complete USACE set: Sheets 1-42 structural/civil (channel crossing, north fixed spans, bascule span, bascule substructure, sector, counterweight, bascule leaf, south fixed span, mechanical room, timber decks, Tilden Way relocation), 43-49 Tilden Way, 50-59 Mechanical, 60-75 Electrical, plus 12A, 52A-52F (bridge operating machinery), 57A-57C (trunnion hanger modification), 76-78 (debris removal hoist, barrier fence). A 'Fruitvale Avenue Railroad Bridge' 14-sheet list is struck DELETED. A separate 'Modification Drawings to Miller-Sweeney Highway Bridge' list has 4 sheets (2-6-68): vicinity/location/electrical plan; stabilizer bracket and stabilizer strut bushing; dolphin access ladders; pier fender access ladder. Location map, vicinity map, site map with project limits (Alameda Approach, Channel Crossing; Oakland Approach not in contract). Note: bridge name changed to Miller-Sweeney Highway Bridge. Revision 4 'As Constructed - Changes made' 75 JUL 14.",
+    "legibility": "good",
+    "verified": false,
+    "notes": "Page stored rotated 270 deg; PyMuPDF renders upright. Sheet 12 title appears amended by hand to 'North Fixed Spans - Pier 10+00.00' and 12A 'Pier 10+97.50' — confirm on those sheets. Modification drawings (stabilizer strut bushing) are directly relevant to the counterweight strut scope item."
+  }
+]

@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated
+01_References/As_Builts/renders/
+
+# Reference documents: licensed (AASHTO, AISC) or large public files. Kept locally only.
+# See README "References not in this repository".
+01_References/**/*.pdf
+01_References/**/*.PDF
+01_References/Drawing Standards/C3D_2024/
+03_Plans/Drawing Standards/
+
+# AutoCAD
+*.bak
+*.dwl
+*.dwl2
+*.sv$
+
+# OS / editor
+Thumbs.db
+.DS_Store

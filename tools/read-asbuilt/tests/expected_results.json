@@ -1,0 +1,6 @@
+{
+  "_comment": "LOCK benchmarks for read-asbuilt. asbuilt_page_count verified by pymupdf on 2026-09-04. Page 1-2 are 11x8.5 in cover pages; sheets from page 3 are ~43x30 in, rotation 270.",
+  "asbuilt_page_count": 79,
+  "min_png_bytes_at_72dpi": 20000,
+  "min_width_px_at_72dpi": 700
+}

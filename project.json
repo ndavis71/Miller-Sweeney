@@ -1,0 +1,130 @@
+{
+  "_comment": "Single source for project identity and title-block data. Fields marked TODO need the EOR or PM.",
+  "project": {
+    "name": "Miller-Sweeney Bridge Deck Rehabilitation",
+    "structure_name": "Miller-Sweeney Bridge (Fruitvale Avenue Highway Bridge)",
+    "facility_carried": "Fruitvale Avenue",
+    "feature_intersected": "Oakland Estuary",
+    "location": "Alameda / Oakland, Alameda County, California",
+    "hh_job_number": "0006888.00",
+    "county_project_number": null,
+    "federal_aid_number": null,
+    "_county_project_number_note": "None assigned (per N. Davis, 2026-09-04)"
+  },
+  "bridge": {
+    "caltrans_bridge_number": "33C0147",
+    "county_code": "33",
+    "county": "Alameda",
+    "caltrans_district": "04",
+    "owner": "Alameda County Public Works Agency",
+    "maintainer": "Alameda County Public Works Agency",
+    "year_built": 1973,
+    "opened": "1973-12-12",
+    "designed_by": "U.S. Army Corps of Engineers",
+    "structure_type_main": "Single-leaf bascule, orthotropic steel deck (Spans 2-3)",
+    "structure_type_approach": "Span 1 steel girder; Spans 4-5 PC/PS I-girders with RC deck",
+    "span_lengths_ft": [
+      36.41,
+      25.26,
+      127.59,
+      93.5,
+      93.5
+    ],
+    "total_length_ft": 395.0,
+    "support_numbering": "Abutment 1 west (Alameda side); Pier 3 = pivot (trunnion) pier; Abutment 6 east",
+    "roadway_width_ft": 52.0,
+    "sidewalk_width_ft": 4.92,
+    "barrier_width_ft": 1.08,
+    "lanes": 4,
+    "design_load_original": "HS 20 (BIRIS item 31: MS 18)",
+    "wearing_surface": "Epoxy overlay, 0.3 in (BIRIS 2025)",
+    "source": "Caltrans BIRIS Routine Inspection Report 2025-04-08, pp. 1-5"
+  },
+  "team": {
+    "client": "Alameda County Public Works Agency",
+    "prime": "Alaco Engineering",
+    "structural_subconsultant": "Hardesty & Hanover",
+    "traffic_survey": "Alaco Engineering or Sanbell",
+    "eor": "Nicholas Davis",
+    "hh_project_manager": "Tom Kubicz",
+    "checker": "TBD"
+  },
+  "design_basis": {
+    "precedence": [
+      {
+        "rank": 1,
+        "document": "California Amendments to AASHTO LRFD BDS 8th Ed.",
+        "edition": "Sept 2025 addenda/errata compilation (base April 2019)",
+        "file": "01_References/Design Codes/Caltrans BDP/202509-aashto-lrfd-ca-amendments-a11y.pdf",
+        "tool_key": "ca"
+      },
+      {
+        "rank": 1,
+        "document": "Caltrans Bridge Design Practice",
+        "edition": "5th Ed. (2022-2025 chapters)",
+        "file": "01_References/Design Codes/Caltrans BDP/",
+        "tool_key": "bdp"
+      },
+      {
+        "rank": 2,
+        "document": "AASHTO LRFD Movable Highway Bridge Design Specifications",
+        "edition": "3rd Ed., 2023",
+        "file": "01_References/Design Codes/AASHTO LRFD MOVABLE 2023.pdf",
+        "tool_key": "movable"
+      },
+      {
+        "rank": 3,
+        "document": "AASHTO LRFD Bridge Design Specifications",
+        "edition": "8th Ed., 2017",
+        "file": "01_References/Design Codes/AASHTO LRFD 2017 BridgeDesignSpecifications 8th Ed (US).PDF",
+        "tool_key": "lrfd"
+      },
+      {
+        "rank": 4,
+        "document": "AISC Steel Construction Manual",
+        "edition": "15th Ed., 2017",
+        "file": "01_References/Design Codes/AISC-Steel-Construction-Manual-15th-Edition-2017.pdf",
+        "tool_key": "aisc"
+      }
+    ],
+    "specifications": "Caltrans Standard Specifications 2025; Standard Special Provisions 2025 (not yet in references)",
+    "editions_confirmed": true,
+    "confirmed_by": "Nicholas Davis (EOR)",
+    "confirmed_on": "2026-09-07 (revised same day: AASHTO 10th -> 8th, CA Amendments added)",
+    "gaps": [
+      "BDP Ch 9.1 Concrete Decks not published",
+      "Caltrans STPs not in references",
+      "Caltrans Std Specs 2025 / SSPs 2025 and AWS D1.5 not in references"
+    ],
+    "units": "US customary (kip, ft, in, ksi)"
+  },
+  "schedule": {
+    "ntp": "2026-06-01",
+    "preliminary_engineering_end": "2026-08-31",
+    "pse_70pct": "2026-11-30",
+    "pse_100pct": "2027-01-31"
+  },
+  "cadd": {
+    "software": "AutoCAD 2023",
+    "standards": "Caltrans CADD Users Manual (May 2026); kit at C:\\Caltrans\\HQ\\C3D_2024",
+    "sheet_size": "22x34 (ANSI D)",
+    "drawing_units": "feet (structures 1:1)",
+    "file_name_pattern": "33-C0147-{p}-{sss}.dwg",
+    "border_template": "C:\\Caltrans\\HQ\\C3D_2024\\Templates\\Borders\\Ct_2024_Design_PlanProfile.dwt",
+    "plot_style": "BW.stb",
+    "fonts": {
+      "notes": "CTFONT1_C3D.shx",
+      "titles": "bold_C3D.shx"
+    },
+    "text_heights_in": {
+      "notes": 0.14,
+      "detail_title": 0.14,
+      "sheet_title": 0.24
+    },
+    "title_block_requirements": "TODO \u2014 confirm Alameda County / BDD title block content with EOR"
+  },
+  "sheet_index": {
+    "_comment": "Planned sheet list. Fill print-sequence code (p) and identifier (sss) per Standards_Notes \u00a71 once the set is agreed.",
+    "sheets": []
+  }
+}
